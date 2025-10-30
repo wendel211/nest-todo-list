@@ -87,4 +87,3 @@ npm run start:dev
 
 - Atualmente não há integração com base de dados — os dados são mantidos em memória por padrão.
 
-Se quiser, posso gerar um README mais detalhado (ex.: exemplos de requisição/resposta, testes de integração ou instruções de deploy).
