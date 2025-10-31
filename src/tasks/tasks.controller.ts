@@ -14,16 +14,19 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import type { Task } from './task.model';
 import { UseGuards } from '@nestjs/common';
 import { MockAuthGuard } from '../auth/mock-auth.guard';
+import { UppercasePipe } from 'src/common/uppercase.pipe';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @Post()
-  @UseGuards(MockAuthGuard)
-  create(@Body() createTaskDto: CreateTaskDto): Task {
-    return this.tasksService.create(createTaskDto);
-  }
+@Post()
+create(
+  @Body('title', new UppercasePipe()) title: string,
+  @Body('description') description: string,
+) {
+  return this.tasksService.create({ title, description });
+}
 
   @Get()
   findAll(): Task[] {
