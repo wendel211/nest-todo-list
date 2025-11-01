@@ -30,60 +30,105 @@
 ```bash
 $ npm install
 ```
-# Nest Todo API (simples)
+# Todo API — NestJS 
 
-Pequena API REST criada com NestJS (TypeScript) para gerenciar uma lista de tarefas (todo list).
+API simples para gerenciamento de tarefas (todo list) construída com NestJS e TypeScript. Projeto exemplo com foco em boas práticas: módulos, DTOs, validação e testes.
 
-## Tecnologias principais
+Resumo rápido
+- Framework: NestJS (TypeScript)
+- Testes: Jest (unit + e2e)
+- Arquitetura modular: módulos `tasks` e `stats`
+- Utilitários: middleware de log, pipe customizado e guard mock para autenticação
 
-- Node.js + TypeScript
-- NestJS v11
-- Jest para testes
+Requisitos
+- Node.js 18+
+- npm (ou pnpm/yarn)
 
-## Estrutura importante
-
-- Código principal: `src/`
-- Módulo de tarefas: `src/tasks/` (controller, service, DTOs, model)
-- Modelo da Task: `src/tasks/task.model.ts`
-
-## Como começar (desenvolvimento)
-
-1. Instalar dependências
-
+Instalação
 ```powershell
 npm install
 ```
 
-2. Rodar em modo desenvolvimento (com watch)
-
+Execução
+- Desenvolvimento (watch):
 ```powershell
 npm run start:dev
 ```
+- Produção:
+```powershell
+npm run build
+npm run start:prod
+```
 
-## Scripts úteis
+Scripts principais (package.json)
+- start, start:dev, build, start:prod
+- test (unit), test:e2e (end-to-end)
+- lint, format
 
-- `npm run start` — inicia a aplicação
-- `npm run start:dev` — inicia com *watch* (recomendado em dev)
-- `npm run build` — compila para `dist/`
-- `npm run start:prod` — roda a build (`node dist/main`)
-- `npm run test` — executa testes unitários (Jest)
-- `npm run test:e2e` — executa testes end-to-end
-- `npm run lint` — executa ESLint
-- `npm run format` — formata com Prettier
+Endpoints principais
+- GET / -> informações da API
+- Tasks (CRUD) — /tasks
+  - GET /tasks
+  - GET /tasks/:id
+  - POST /tasks
+  - PUT /tasks/:id
+  - PATCH /tasks/:id
+  - DELETE /tasks/:id
+- Stats — /stats
+  - GET /stats
+- (Se configurado) Swagger UI: /docs
 
-## Padrões do projeto
+Exemplos (curl)
+- Criar task:
+```bash
+curl -X POST http://localhost:3000/tasks -H "Content-Type: application/json" -d '{"title":"Comprar leite","description":"Ir ao mercado"}'
+```
+- Listar tasks:
+```bash
+curl http://localhost:3000/tasks
+```
 
-- DTOs usam `class-validator` (ver `src/tasks/dto/`): mantenha validações nos DTOs.
-- Lógica de negócio deve ficar em `TasksService` (`src/tasks/tasks.service.ts`).
-- Controladores (`TasksController`) apenas delegam para o service.
+Principais features implementadas
+- DTOs com validação (`class-validator`) em `src/tasks/dto/`
+- Lógica de negócio centralizada em `TasksService` (`src/tasks/tasks.service.ts`
+- Controllers limpos — delegam para services (`src/tasks/tasks.controller.ts`)
+- Middleware de logging: `src/common/logger.middleware.ts`
+- Pipe customizado: `src/common/uppercase.pipe.ts`
+- Guard de autenticação mock: `src/auth/mock-auth.guard.ts`
+- Módulo de estatísticas: `src/stats/`
 
-## Como adicionar um endpoint rapidamente
+Persistência
+- Implementação atual mantém dados em memória / arquivo como simulação. Para produção, substitua por banco de dados (ex.: TypeORM, Prisma, MongoDB).
 
-1. Criar/atualizar um DTO em `src/tasks/dto/`.
-2. Implementar lógica no `TasksService`.
-3. Adicionar o método no `TasksController` e expor a rota.
+Estrutura importante
+- src/
+  - app.module.ts, main.ts
+  - tasks/ (controller, service, dto, model)
+  - stats/ (controller, service)
+  - common/ (middleware, pipes)
+  - auth/ (mock guard)
 
-## Notas
+Testes
+- Unitários:
+```powershell
+npm run test
+```
+- E2E:
+```powershell
+npm run test:e2e
+```
 
-- Atualmente não há integração com base de dados — os dados são mantidos em memória por padrão.
+Contribuição
+- Abra issues ou PRs. Siga lint/format e escreva testes para novas funcionalidades.
+
+Licença
+- Projeto exemplo / template — adapte conforme necessário.
+
+Referências rápidas
+- src/app.module.ts
+- src/main.ts
+- src/tasks/*
+- src/stats/*
+- src/common/*
+- src/auth/mock-auth.guard.ts
 
