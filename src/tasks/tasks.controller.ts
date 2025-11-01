@@ -45,9 +45,9 @@ create(
   ): Task {
     return this.tasksService.update(id, updateTaskDto);
   }
+@Delete(':id')
+remove(@Param('id', ParseIntPipe) id: number): { message: string } {
+  return this.tasksService.remove(id);
+}
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): void {
-    return this.tasksService.remove(id);
-  }
 }
